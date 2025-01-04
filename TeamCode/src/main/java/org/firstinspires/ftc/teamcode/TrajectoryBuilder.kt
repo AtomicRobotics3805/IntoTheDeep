@@ -5,6 +5,7 @@ import com.pedropathing.pathgen.BezierCurve
 import com.pedropathing.pathgen.BezierLine
 import com.pedropathing.pathgen.PathChain
 import com.pedropathing.pathgen.Point
+import com.rowanmcalpin.nextftc.core.toRadians
 import com.rowanmcalpin.nextftc.pedro.FollowerNotInitializedException
 import com.rowanmcalpin.nextftc.pedro.PedroData.follower
 

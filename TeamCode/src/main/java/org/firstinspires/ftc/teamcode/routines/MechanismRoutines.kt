@@ -25,6 +25,7 @@ object MechanismRoutines {
                 IntakeExtension.toOut,
                 IntakePivot.transfer
             ),
+            Delay(0.1),
             ParallelGroup(
                 IntakePivot.down,
                 intakeRoutine
@@ -49,6 +50,7 @@ object MechanismRoutines {
                 IntakeExtension.toSlightlyOut,
                 IntakePivot.transfer
             ),
+            Delay(0.1),
             ParallelGroup(
                 IntakePivot.down,
                 intakeRoutine
@@ -58,7 +60,8 @@ object MechanismRoutines {
     val autoIntakeRoutine: Command
         get() = SequentialGroup(
             Intake.start,
-            IntakeSensor.WaitUntilSample()
+            IntakeSensor.WaitUntilSample(),
+            Intake.slowForward
         )
 
     val intakeRoutine: Command
@@ -70,14 +73,11 @@ object MechanismRoutines {
 
     val transfer: Command
         get() = SequentialGroup(
-            Intake.slowForward,
             IntakePivot.transfer,
-            ParallelGroup(
-                LiftNew.toSlightlyHigh,
-                Claw.open,
-                Arm.toIntake,
-                IntakeExtension.toTransfer
-            ),
+            Arm.toIntake,
+            Claw.open,
+            LiftNew.toSlightlyHigh,
+            IntakeExtension.toTransfer,
             LiftNew.toIntake,
             Claw.close,
             Intake.stop
@@ -90,17 +90,13 @@ object MechanismRoutines {
     //endregion
 
     val sampleHigh: Command
-        get() = ParallelGroup(
-            SequentialGroup(
+        get() = SequentialGroup(
+            Claw.close,
+            ParallelGroup(
                 IntakeExtension.toSlightlyOut,
-                IntakeExtension.toTransfer
+                LiftNew.toHigh
             ),
-            SequentialGroup(
-                Delay(1.0),
-                Arm.toBasketScore
-            ),
-            LiftNew.toHigh,
-            IntakePivot.transfer
+            Arm.toBasketScore
         )
 
     @Deprecated("Have not implemented low bucket yet")

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes
 
-import com.pedropathing.follower.Follower
 import com.pedropathing.follower.FollowerConstants
 import com.pedropathing.localization.Pose
 import com.pedropathing.localization.PoseUpdater
@@ -9,15 +8,12 @@ import com.pedropathing.util.Constants
 import com.pedropathing.util.DashboardPoseTracker
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.IMU
-import com.rowanmcalpin.nextftc.core.command.Command
 import com.rowanmcalpin.nextftc.core.command.utility.InstantCommand
 import com.rowanmcalpin.nextftc.core.toRadians
+import com.rowanmcalpin.nextftc.ftc.NextFTCOpMode
 import com.rowanmcalpin.nextftc.ftc.OpModeData
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.MotorEx
-import com.rowanmcalpin.nextftc.pedro.DriverControlled
-import com.rowanmcalpin.nextftc.pedro.PedroOpMode
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.teamcode.FConstants
 import org.firstinspires.ftc.teamcode.LConstants
@@ -31,9 +27,8 @@ import org.firstinspires.ftc.teamcode.subsystems.IntakePivot
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSensor
 import org.firstinspires.ftc.teamcode.subsystems.LiftNew
 
-
-@TeleOp(name = "Testing TeleOp")
-class TestTeleOp: PedroOpMode(Claw, Intake, Arm, IntakeExtension, IntakePivot, IntakeSensor, LiftNew) {
+@TeleOp(name = "Competition TeleOp")
+class CompetitionTeleOp: NextFTCOpMode() {
 
     val fConstants: FConstants = FConstants
     val lConstants: LConstants = LConstants
@@ -95,6 +90,7 @@ class TestTeleOp: PedroOpMode(Claw, Intake, Arm, IntakeExtension, IntakePivot, I
     override fun onStartButtonPressed() {
         driverControlled = MecanumDriverControlledFixed(motors, gamepadManager.gamepad1, false, imu)
         driverControlled()
+        driverControlled.orientation = 90.0.toRadians
         registerControls()
     }
 
@@ -109,15 +105,20 @@ class TestTeleOp: PedroOpMode(Claw, Intake, Arm, IntakeExtension, IntakePivot, I
     }
 
     private fun registerControls() {
-        gamepadManager.gamepad1.a.pressedCommand = { MechanismRoutines.farIntake }
-        gamepadManager.gamepad1.dpadRight.pressedCommand = { MechanismRoutines.eject }
-        gamepadManager.gamepad1.x.pressedCommand = { MechanismRoutines.sampleHigh }
-        gamepadManager.gamepad1.b.pressedCommand = { MechanismRoutines.transfer }
-        gamepadManager.gamepad1.y.pressedCommand = { MechanismRoutines.bucketDropAndReset }
-
-        gamepadManager.gamepad1.rightBumper.pressedCommand = { InstantCommand({ driverControlled.scalar = 0.5 }) }
-        gamepadManager.gamepad1.rightBumper.releasedCommand = { InstantCommand({ driverControlled.scalar = 1.0 }) }
-
         gamepadManager.gamepad1.dpadUp.pressedCommand = { IntakeExtension.toSlightlyOut }
+        // COMPETITION CONTROLS
+        gamepadManager.gamepad1.a.pressedCommand = { MechanismRoutines.farIntake }
+        gamepadManager.gamepad1.leftBumper.pressedCommand = { MechanismRoutines.nearIntake }
+        gamepadManager.gamepad2.rightTrigger.pressedCommand = { MechanismRoutines.bucketDropAndReset }
+        gamepadManager.gamepad1.dpadRight.pressedCommand = { Intake.reverse }
+        gamepadManager.gamepad1.rightBumper.pressedCommand = { InstantCommand({ driverControlled.scalar = 0.5 })}
+        gamepadManager.gamepad1.rightBumper.releasedCommand = { InstantCommand({ driverControlled.scalar = 1.0 })}
+        gamepadManager.gamepad1.x.pressedCommand = { InstantCommand({ driverControlled.orientation = 0.0 })}
+
+        gamepadManager.gamepad2.x.pressedCommand = { MechanismRoutines.sampleHigh }
+        gamepadManager.gamepad2.b.pressedCommand = { MechanismRoutines.transfer }
+        gamepadManager.gamepad2.a.pressedCommand = { Claw.open }
+
+        gamepadManager.gamepad2.dpadDown.pressedCommand = { LiftNew.toIntake }
     }
 }

@@ -24,8 +24,8 @@ object Lift: Subsystem() {
     lateinit var rightMotor: DcMotorEx // lift
     lateinit var leftMotor: DcMotorEx // lift2
     
-    val rightController = PIDController(PIDCoefficients(0.005, 0.0, 0.0))
-    val leftController = PIDController(PIDCoefficients(0.005, 0.0, 0.0))
+    val rightController = PIDController(0.005, 0.0, 0.0)
+    val leftController = PIDController(0.005, 0.0, 0.0)
     
     private var hanging = false
     

@@ -12,15 +12,6 @@ class PIDDebug: NextFTCOpMode(LiftNew) {
 
     companion object {
         @JvmField
-        var kP: Double = 0.0
-        @JvmField
-        var kI: Double = 0.0
-        @JvmField
-        var kD: Double = 0.0
-        @JvmField
-        var kF: Double = 0.0
-
-        @JvmField
         var targetPosition = 0.0
     }
 
@@ -29,11 +20,6 @@ class PIDDebug: NextFTCOpMode(LiftNew) {
     }
 
     override fun onUpdate() {
-        LiftNew.controller.coefficients.kP = kP
-        LiftNew.controller.coefficients.kI = kI
-        LiftNew.controller.coefficients.kD = kD
-        LiftNew.controller.coefficients.kF = kF
-
         LiftNew.controller.target = targetPosition
 
         LiftNew.motorGroup.power = LiftNew.controller.calculate(LiftNew.motorGroup.currentPosition)

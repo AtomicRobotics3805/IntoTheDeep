@@ -1,39 +1,41 @@
 package org.firstinspires.ftc.teamcode.subsystems
 
 import com.acmerobotics.dashboard.config.Config
-import com.qualcomm.robotcore.hardware.DcMotor
-import com.qualcomm.robotcore.hardware.DcMotorEx
-import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.rowanmcalpin.nextftc.core.Subsystem
 import com.rowanmcalpin.nextftc.core.command.Command
 import com.rowanmcalpin.nextftc.core.command.groups.SequentialGroup
 import com.rowanmcalpin.nextftc.core.command.utility.ForcedParallelCommand
-import com.rowanmcalpin.nextftc.core.command.utility.InstantCommand
-import com.rowanmcalpin.nextftc.core.command.utility.NullCommand
 import com.rowanmcalpin.nextftc.core.control.coefficients.PIDCoefficients
-import com.rowanmcalpin.nextftc.core.control.coefficients.PIDFCoefficients
-import com.rowanmcalpin.nextftc.core.control.controllers.PIDController
 import com.rowanmcalpin.nextftc.core.control.controllers.PIDFController
-import com.rowanmcalpin.nextftc.ftc.OpModeData
-import com.rowanmcalpin.nextftc.ftc.hardware.MultipleMotorsHoldPosition
-import com.rowanmcalpin.nextftc.ftc.hardware.MultipleMotorsToPosition
+import com.rowanmcalpin.nextftc.core.control.controllers.feedforward.Feedforward
+import com.rowanmcalpin.nextftc.core.control.controllers.feedforward.StaticFeedforward
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.HoldPosition
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.MotorEx
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.MotorGroup
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.ResetEncoder
 import com.rowanmcalpin.nextftc.ftc.hardware.controllables.RunToPosition
-import com.rowanmcalpin.nextftc.ftc.hardware.controllables.SetPower
-import kotlin.math.absoluteValue
 
 @Config
 object LiftNew: Subsystem() {
+
+    override val defaultCommand: Command
+        get() = HoldPosition(motorGroup, controller, this)
+
     lateinit var rightMotor: MotorEx // lift
     lateinit var leftMotor: MotorEx // lift2
 
     lateinit var motorGroup: MotorGroup
 
     @JvmField
-    val controller = PIDFController(PIDFCoefficients(0.01, 0.0, 0.0, 0.13))
+    val coefficients = PIDCoefficients(0.007, 0.0, 0.0)
+
+    @JvmField
+    var kF: Double = 0.13
+
+    val controller = PIDFController(coefficients, { kF }, setPointTolerance = 20.0)
+
+    @JvmField
+    var attempted = false
 
     @JvmField
     var intakePos = -10.0
@@ -42,7 +44,7 @@ object LiftNew: Subsystem() {
     @JvmField
     var highPos = 4000.0
     @JvmField
-    var slightlyHighPos = 720.0
+    var slightlyHighPos = 400.0
     @JvmField
     var specimenScorePos = 277.0
     @JvmField
@@ -64,46 +66,35 @@ object LiftNew: Subsystem() {
         get() = RunToPosition(motorGroup, intakePos, controller, this)
 
     val toSpecimenPickup: Command
-        get() = SequentialGroup(
-            RunToPosition(motorGroup, specimenPickupPos, controller, this)
-        )
+        get() = RunToPosition(motorGroup, specimenPickupPos, controller, this)
 
     val toHigh: Command
-        get() = SequentialGroup(
-            RunToPosition(motorGroup, highPos, controller, this),
-            HoldPosition(motorGroup, controller, this)
-        )
+        get() = RunToPosition(motorGroup, highPos, controller, this)
 
     val toSlightlyHigh: Command
-        get() = SequentialGroup(
-            RunToPosition(motorGroup, slightlyHighPos, controller, this)
-        )
+        get() = RunToPosition(motorGroup, slightlyHighPos, controller, this)
+
 
     val toSpecimenScore: Command
-        get() = SequentialGroup(
+        get() =
             RunToPosition(motorGroup, specimenScorePos, controller, this)
-        )
+
 
     val toAutonomousSpecScore: Command
-        get() = SequentialGroup(
+        get() =
             RunToPosition(motorGroup, specimenAutonomousScorePos, controller, this)
-        )
 
     val toFirstAutonomousSpecScore: Command
-        get() = SequentialGroup(
+        get() =
             RunToPosition(motorGroup, firstAutonomousSpecimenScorePos, controller, this)
-        )
+
 
     val toHang: Command
-        get() = SequentialGroup(
-            RunToPosition(motorGroup, hangPos, controller, this)
-        )
+        get() = RunToPosition(motorGroup, hangPos, controller, this)
 
     override fun initialize() {
         rightMotor = MotorEx(rightMotorName).reverse()
         leftMotor = MotorEx(leftMotorName)
         motorGroup = MotorGroup(rightMotor, leftMotor)
-
-        controller.setPointTolerance = 20.0
     }
 }
