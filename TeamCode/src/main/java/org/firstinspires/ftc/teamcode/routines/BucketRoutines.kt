@@ -12,7 +12,7 @@ object BucketRoutines {
     val firstSample: Command
         get() = SequentialGroup(
             ParallelGroup(
-                FollowPath(TrajectoryBuilder.startToBucket),
+//                FollowPath(TrajectoryBuilder.startToBucket),
                 MechanismRoutines.sampleHigh
             )
         )
@@ -28,7 +28,7 @@ object BucketRoutines {
                             MechanismRoutines.farIntakeAuto,
                             Delay(3.0)
                         ),
-                        FollowPath(TrajectoryBuilder.bucketToFirstSample)
+//                        FollowPath(TrajectoryBuilder.bucketToFirstSample)
                     )
                 )
             ),
@@ -37,7 +37,7 @@ object BucketRoutines {
                     MechanismRoutines.transfer,
                     MechanismRoutines.sampleHigh
                 ),
-                FollowPath(TrajectoryBuilder.firstSampleToBucket)
+//                FollowPath(TrajectoryBuilder.firstSampleToBucket)
             )
         )
 
@@ -52,7 +52,7 @@ object BucketRoutines {
                             MechanismRoutines.farIntakeAuto,
                             Delay(3.0)
                         ),
-                        FollowPath(TrajectoryBuilder.bucketToSecondSample)
+//                        FollowPath(TrajectoryBuilder.bucketToSecondSample)
                     )
                 )
             ),
@@ -61,7 +61,7 @@ object BucketRoutines {
                     MechanismRoutines.transfer,
                     MechanismRoutines.sampleHigh
                 ),
-                FollowPath(TrajectoryBuilder.secondSampleToBucket)
+//                FollowPath(TrajectoryBuilder.secondSampleToBucket)
             )
         )
 
@@ -76,7 +76,7 @@ object BucketRoutines {
                             MechanismRoutines.farIntakeAuto,
                             Delay(3.0)
                         ),
-                        FollowPath(TrajectoryBuilder.bucketToThirdSample)
+//                        FollowPath(TrajectoryBuilder.bucketToThirdSample)
                     )
                 )
             ),
@@ -85,7 +85,7 @@ object BucketRoutines {
                     MechanismRoutines.transfer,
                     MechanismRoutines.sampleHigh
                 ),
-                FollowPath(TrajectoryBuilder.thirdSampleToBucket)
+//                FollowPath(TrajectoryBuilder.thirdSampleToBucket)
             )
         )
 
@@ -94,7 +94,7 @@ object BucketRoutines {
             MechanismRoutines.bucketDropAndLevel1,
             SequentialGroup(
                 Delay(0.5),
-                FollowPath(TrajectoryBuilder.bucketToPark)
+//                FollowPath(TrajectoryBuilder.bucketToPark)
             )
         )
 }
