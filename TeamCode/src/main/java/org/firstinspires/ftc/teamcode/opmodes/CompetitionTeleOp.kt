@@ -25,10 +25,11 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake
 import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
 import org.firstinspires.ftc.teamcode.subsystems.IntakePivot
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSensor
+import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.subsystems.LiftNew
 
 @TeleOp(name = "Competition TeleOp")
-class CompetitionTeleOp: NextFTCOpMode() {
+class CompetitionTeleOp: NextFTCOpMode(Claw, Intake, Arm, IntakeExtension, IntakePivot, IntakeSensor, LiftNew) {
 
     val fConstants: FConstants = FConstants
     val lConstants: LConstants = LConstants
@@ -111,6 +112,7 @@ class CompetitionTeleOp: NextFTCOpMode() {
         gamepadManager.gamepad1.leftBumper.pressedCommand = { MechanismRoutines.nearIntake }
         gamepadManager.gamepad2.rightTrigger.pressedCommand = { MechanismRoutines.bucketDropAndReset }
         gamepadManager.gamepad1.dpadRight.pressedCommand = { Intake.reverse }
+        gamepadManager.gamepad1.dpadLeft.pressedCommand = { Intake.start }
         gamepadManager.gamepad1.rightBumper.pressedCommand = { InstantCommand({ driverControlled.scalar = 0.5 })}
         gamepadManager.gamepad1.rightBumper.releasedCommand = { InstantCommand({ driverControlled.scalar = 1.0 })}
         gamepadManager.gamepad1.x.pressedCommand = { InstantCommand({ driverControlled.orientation = 0.0 })}
@@ -120,5 +122,8 @@ class CompetitionTeleOp: NextFTCOpMode() {
         gamepadManager.gamepad2.a.pressedCommand = { Claw.open }
 
         gamepadManager.gamepad2.dpadDown.pressedCommand = { LiftNew.toIntake }
+
+        gamepadManager.gamepad1.dpadUp.pressedCommand = { MechanismRoutines.toHang }
+        gamepadManager.gamepad1.dpadDown.pressedCommand = { Lift.toIntake }
     }
 }

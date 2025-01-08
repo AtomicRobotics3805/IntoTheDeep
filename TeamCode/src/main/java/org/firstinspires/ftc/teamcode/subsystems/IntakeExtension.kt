@@ -35,6 +35,8 @@ object IntakeExtension: Subsystem() {
     var slightlyOutPos = 700.0 // TODO
     @JvmField
     var middlePos = 600.0
+    @JvmField
+    var autoOutPos = 800.0
     
     @JvmField
     var motorName = "intake_extension"
@@ -51,12 +53,15 @@ object IntakeExtension: Subsystem() {
     val toMiddlePos: Command
         get() = RunToPosition(motor, middlePos, controller, this)
 
+    val toIntakeAuto: Command
+        get() = RunToPosition(motor, autoOutPos, controller, this)
+
     val resetEncoder: Command
         get() = ResetEncoder(motor, this)
 
     override fun initialize() {
         motor = MotorEx(motorName)
         motor.direction = DcMotorSimple.Direction.REVERSE
-        controller.setPointTolerance = 30.0
+        controller.setPointTolerance = 10.0
     }
 }

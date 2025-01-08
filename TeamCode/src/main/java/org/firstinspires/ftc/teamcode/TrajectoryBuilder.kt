@@ -12,31 +12,29 @@ import com.rowanmcalpin.nextftc.pedro.PedroData.follower
 
 object TrajectoryBuilder {
     //region PEDRO PATHING
-    val startPose =
-        Pose(
-            9.0,
-            112.5,
-            0.0.toRadians
-        )
-    val scorePose =
-        Pose(
-            17.3,
-            126.6,
-            (-45.0).toRadians
-        )
+    val startPose = Pose(
+        9.0,
+        112.5,
+        0.0.toRadians
+    )
+    val scorePose = Pose(
+        24.0,
+        126.0,
+        (-45.0).toRadians
+    )
     val sample1 = Pose(
-        30.0,
-        120.0,
+        24.0,
+        122.0,
         0.0.toRadians
     )
     val sample2 = Pose(
-        30.0,
-        131.0,
+        24.0,
+        129.0,
         0.0.toRadians
     )
     val sample3 = Pose(
-        34.5,
-        130.0,
+        24.0,
+        122.0,
         45.0.toRadians
     )
     val parkPose = Pose(

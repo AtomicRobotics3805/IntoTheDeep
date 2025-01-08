@@ -83,7 +83,7 @@ class MecanumDriverControlledFixed(val motors: Array<out Controllable>, val driv
         val rx = turnJoystick.x.toDouble()
 
         if (!robotCentric) {
-            val botHeading = imu!!.robotYawPitchRollAngles.getYaw(AngleUnit.RADIANS)
+            val botHeading = orientation
 
             // Rotate the movement direction counter to the bot's rotation
             var rotX = x * cos(-botHeading) - y * sin(-botHeading)

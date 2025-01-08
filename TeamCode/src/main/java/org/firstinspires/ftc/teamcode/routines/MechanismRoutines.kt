@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.routines
 import com.rowanmcalpin.nextftc.core.command.Command
 import com.rowanmcalpin.nextftc.core.command.groups.ParallelGroup
 import com.rowanmcalpin.nextftc.core.command.groups.SequentialGroup
+import com.rowanmcalpin.nextftc.core.command.utility.InstantCommand
 import com.rowanmcalpin.nextftc.core.command.utility.conditionals.PassiveSwitchCommand
 import com.rowanmcalpin.nextftc.core.command.utility.delays.Delay
 import com.rowanmcalpin.nextftc.ftc.OpModeData
@@ -20,22 +21,20 @@ object MechanismRoutines {
 
     // Far intake with pivot down at end (for submersible)
     val farIntake: Command
-        get() = SequentialGroup(
-            ParallelGroup(
-                IntakeExtension.toOut,
-                IntakePivot.transfer
-            ),
-            Delay(0.1),
-            ParallelGroup(
+        get() = ParallelGroup(
+            IntakeExtension.toOut,
+            IntakePivot.transfer,
+            SequentialGroup(
+                Delay(0.5),
                 IntakePivot.down,
-                intakeRoutine
+                autoIntakeRoutine
             )
         )
 
     // Far intake with pivot down as quickly as possible (for auto or other samples on the field not in the submersible)
     val farIntakeAuto: Command
         get() = ParallelGroup(
-            IntakeExtension.toOut,
+            IntakeExtension.toIntakeAuto,
             IntakePivot.transfer,
             SequentialGroup(
                 Delay(0.5),
@@ -93,10 +92,16 @@ object MechanismRoutines {
         get() = SequentialGroup(
             Claw.close,
             ParallelGroup(
-                IntakeExtension.toSlightlyOut,
-                LiftNew.toHigh
-            ),
-            Arm.toBasketScore
+                SequentialGroup(
+                    IntakeExtension.toSlightlyOut,
+                    IntakeExtension.toTransfer
+                ),
+                LiftNew.toHigh,
+                SequentialGroup(
+                    Delay(1.3),
+                    Arm.toBasketScore
+                )
+            )
         )
 
     @Deprecated("Have not implemented low bucket yet")
@@ -117,11 +122,10 @@ object MechanismRoutines {
     val bucketDropAndReset: Command
         get() = SequentialGroup(
             Claw.open,
-            Delay(0.2),
-            ParallelGroup(
-                Arm.toIntake,
-                LiftNew.toIntake
-            )
+            Delay(0.5),
+            Arm.toIntake,
+            Delay(0.5),
+            LiftNew.toIntake
         )
 
     val bucketDropAndLevel1: Command
