@@ -30,7 +30,7 @@ object IntakeExtension: Subsystem() {
     @JvmField
     var transferPos = 100.0
     @JvmField
-    var autoTransferPos = -50.0
+    var autoTransferPos = 100.0
     @JvmField
     var outPos = 1200.0 // TODO
     @JvmField

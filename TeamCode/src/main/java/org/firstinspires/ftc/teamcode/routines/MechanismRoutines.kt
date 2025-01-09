@@ -1,11 +1,15 @@
 package org.firstinspires.ftc.teamcode.routines
 
+import com.qualcomm.hardware.ams.AMSColorSensor.Wait
 import com.rowanmcalpin.nextftc.core.command.Command
 import com.rowanmcalpin.nextftc.core.command.groups.ParallelGroup
 import com.rowanmcalpin.nextftc.core.command.groups.SequentialGroup
+import com.rowanmcalpin.nextftc.core.command.utility.ForcedParallelCommand
 import com.rowanmcalpin.nextftc.core.command.utility.InstantCommand
+import com.rowanmcalpin.nextftc.core.command.utility.conditionals.BlockingConditionalCommand
 import com.rowanmcalpin.nextftc.core.command.utility.conditionals.PassiveSwitchCommand
 import com.rowanmcalpin.nextftc.core.command.utility.delays.Delay
+import com.rowanmcalpin.nextftc.core.command.utility.delays.WaitUntil
 import com.rowanmcalpin.nextftc.ftc.OpModeData
 import org.firstinspires.ftc.teamcode.subsystems.Arm
 import org.firstinspires.ftc.teamcode.subsystems.Claw
@@ -13,7 +17,6 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake
 import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
 import org.firstinspires.ftc.teamcode.subsystems.IntakePivot
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSensor
-import org.firstinspires.ftc.teamcode.subsystems.Lift
 import org.firstinspires.ftc.teamcode.subsystems.LiftNew
 
 object MechanismRoutines {
@@ -91,17 +94,13 @@ object MechanismRoutines {
     val sampleHigh: Command
         get() = SequentialGroup(
             Claw.close,
-            ParallelGroup(
-                SequentialGroup(
-                    IntakeExtension.toSlightlyOut,
-                    IntakeExtension.toTransfer
-                ),
-                LiftNew.toHigh,
-                SequentialGroup(
-                    Delay(1.3),
-                    Arm.toBasketScore
-                )
-            )
+            ForcedParallelCommand(IntakeExtension.toSlightlyOut),
+            ForcedParallelCommand(LiftNew.toHigh),
+            WaitUntil({ LiftNew.motorGroup.currentPosition >= 300}),
+            IntakeExtension.toTransfer,
+            WaitUntil({ LiftNew.motorGroup.currentPosition >= 2000 }),
+            Arm.toBasketScore,
+            WaitUntil({ LiftNew.controller.atTarget(LiftNew.motorGroup.currentPosition) })
         )
 
     @Deprecated("Have not implemented low bucket yet")
@@ -147,7 +146,8 @@ object MechanismRoutines {
             IntakeExtension.toAutoTransfer,
             LiftNew.toAutoTransferPos,
             Claw.close,
-            Intake.stop
+            Intake.stop,
+            Delay(0.3)
         )
     val toHang: Command
         get() = ParallelGroup(

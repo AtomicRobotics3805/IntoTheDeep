@@ -19,12 +19,12 @@ object TrajectoryBuilder {
         0.0.toRadians
     )
     val scorePose = Pose(
-        25.0,
-        125.0,
+        26.0,
+        126.0,
         (-45.0).toRadians
     )
     val sample1 = Pose(
-        25.0,
+        25.6,
         122.0,
         0.0.toRadians
     )
@@ -34,13 +34,13 @@ object TrajectoryBuilder {
         0.0.toRadians
     )
     val sample3 = Pose(
-        26.5,
+        28.0,
         125.5,
         45.0.toRadians
     )
     val parkPose = Pose(
         60.0,
-        88.0,
+        86.0,
         90.0.toRadians
     )
 

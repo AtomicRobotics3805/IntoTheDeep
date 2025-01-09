@@ -19,7 +19,7 @@ object Arm: Subsystem() {
     @JvmField
     var basketScorePos = 0.69
     @JvmField
-    var autoParkPos = 0.63
+    var autoParkPos = 0.65
     @JvmField
     var specimenPickupPos = 0.97
     @JvmField

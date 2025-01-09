@@ -20,6 +20,7 @@ object BucketRoutines {
 
     val secondSample: Command
         get() = SequentialGroup(
+            Delay(0.5),
             ParallelGroup(
                 MechanismRoutines.bucketDropAndReset,
                 SequentialGroup(
@@ -44,6 +45,7 @@ object BucketRoutines {
 
     val thirdSample: Command
         get() = SequentialGroup(
+            Delay(0.5),
             ParallelGroup(
                 MechanismRoutines.bucketDropAndReset,
                 SequentialGroup(
@@ -68,6 +70,7 @@ object BucketRoutines {
 
     val fourthSample: Command
         get() = SequentialGroup(
+            Delay(0.5),
             ParallelGroup(
                 MechanismRoutines.bucketDropAndReset,
                 SequentialGroup(
@@ -92,6 +95,7 @@ object BucketRoutines {
 
     val park: Command
         get() = ParallelGroup(
+            Delay(0.5),
             SequentialGroup(
                 Claw.open,
                 Delay(0.2),
@@ -100,7 +104,7 @@ object BucketRoutines {
             SequentialGroup(
                 Delay(0.5),
                 FollowPath(TrajectoryBuilder.bucketToPark, true),
-                Arm.toBasketScore
+                Arm.toAutoPark
             )
         )
 }

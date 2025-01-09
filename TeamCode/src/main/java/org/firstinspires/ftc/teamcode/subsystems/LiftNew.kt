@@ -32,19 +32,19 @@ object LiftNew: Subsystem() {
     @JvmField
     var kF: Double = 0.13
 
-    val controller = PIDFController(coefficients, { kF }, setPointTolerance = 20.0)
+    val controller = PIDFController(coefficients, { kF }, setPointTolerance = 30.0)
 
     @JvmField
     var attempted = false
 
     @JvmField
-    var autoTransferPos = 0.0
+    var autoTransferPos = 40.0
     @JvmField
-    var intakePos = -10.0
+    var intakePos = 20.0
     @JvmField
     var specimenPickupPos = 107.0
     @JvmField
-    var highPos = 4000.0
+    var highPos = 3700.0
     @JvmField
     var slightlyHighPos = 400.0
     @JvmField
@@ -54,7 +54,7 @@ object LiftNew: Subsystem() {
     @JvmField
     var firstAutonomousSpecimenScorePos = 253.0
     @JvmField
-    var hangPos = 1000.0
+    var hangPos = 2400.0
 
     @JvmField
     var rightMotorName = "lift"
