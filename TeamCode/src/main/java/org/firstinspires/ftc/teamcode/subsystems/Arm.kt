@@ -15,7 +15,7 @@ object Arm: Subsystem() {
     var name = "arm"
 
     @JvmField
-    var intakePos = 0.0
+    var intakePos = 0.03
     @JvmField
     var basketScorePos = 0.69
     @JvmField

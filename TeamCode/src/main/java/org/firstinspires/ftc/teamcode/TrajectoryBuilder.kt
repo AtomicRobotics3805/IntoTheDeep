@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode
 import com.pedropathing.localization.Pose
 import com.pedropathing.pathgen.BezierCurve
 import com.pedropathing.pathgen.BezierLine
+import com.pedropathing.pathgen.Path
 import com.pedropathing.pathgen.PathChain
 import com.pedropathing.pathgen.Point
 import com.rowanmcalpin.nextftc.core.toRadians
@@ -18,38 +19,45 @@ object TrajectoryBuilder {
         0.0.toRadians
     )
     val scorePose = Pose(
-        24.0,
-        126.0,
+        25.0,
+        125.0,
         (-45.0).toRadians
     )
     val sample1 = Pose(
-        24.0,
+        25.0,
         122.0,
         0.0.toRadians
     )
     val sample2 = Pose(
-        24.0,
-        129.0,
+        25.0,
+        130.5,
         0.0.toRadians
     )
     val sample3 = Pose(
-        24.0,
-        122.0,
+        26.5,
+        125.5,
         45.0.toRadians
     )
     val parkPose = Pose(
         60.0,
-        93.0,
+        88.0,
         90.0.toRadians
     )
 
     lateinit var startToBucket: PathChain
+
     lateinit var bucketToFirstSample: PathChain
+    lateinit var pickupFirstSample: PathChain
     lateinit var firstSampleToBucket: PathChain
+
     lateinit var bucketToSecondSample: PathChain
+    lateinit var pickupSecondSample: PathChain
     lateinit var secondSampleToBucket: PathChain
+
     lateinit var bucketToThirdSample: PathChain
+    lateinit var pickupThirdSample: PathChain
     lateinit var thirdSampleToBucket: PathChain
+
     lateinit var bucketToPark: PathChain
 
     fun buildBucketPaths() {
@@ -90,11 +98,25 @@ object TrajectoryBuilder {
             .setLinearHeadingInterpolation(scorePose.heading, sample1.heading)
             .build()
 
-        firstSampleToBucket = follower!!.pathBuilder()
+        pickupFirstSample = follower!!.pathBuilder()
             .addPath(
                 BezierLine(
                     Point(
                         sample1
+                    ),
+                    Point(
+                        sample1.x+3, sample1.y
+                    )
+                )
+            )
+            .setLinearHeadingInterpolation(scorePose.heading, sample1.heading)
+            .build()
+
+        firstSampleToBucket = follower!!.pathBuilder()
+            .addPath(
+                BezierLine(
+                    Point(
+                        sample1.x+3, sample1.y
                     ),
                     Point(
                         scorePose
@@ -118,11 +140,25 @@ object TrajectoryBuilder {
             .setLinearHeadingInterpolation(scorePose.heading, sample2.heading)
             .build()
 
+        pickupSecondSample = follower!!.pathBuilder()
+            .addPath(
+                BezierLine(
+                    Point(
+                        sample2.x+3, sample2.y
+                    ),
+                    Point(
+                        scorePose
+                    )
+                )
+            )
+            .setConstantHeadingInterpolation(sample2.heading)
+            .build()
+
         secondSampleToBucket = follower!!.pathBuilder()
             .addPath(
                 BezierLine(
                     Point(
-                        sample2
+                        sample2.x+3, sample2.y
                     ),
                     Point(
                         scorePose
@@ -146,11 +182,25 @@ object TrajectoryBuilder {
             .setLinearHeadingInterpolation(scorePose.heading, sample3.heading)
             .build()
 
+        pickupThirdSample = follower!!.pathBuilder()
+            .addPath(
+                BezierLine(
+                    Point(
+                        sample3.x+3, sample3.y
+                    ),
+                    Point(
+                        scorePose
+                    )
+                )
+            )
+            .setConstantHeadingInterpolation(sample3.heading)
+            .build()
+
         thirdSampleToBucket = follower!!.pathBuilder()
             .addPath(
                 BezierLine(
                     Point(
-                        sample3
+                        sample3.x+3, sample3.y
                     ),
                     Point(
                         scorePose

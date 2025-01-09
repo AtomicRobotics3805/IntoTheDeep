@@ -38,6 +38,8 @@ object LiftNew: Subsystem() {
     var attempted = false
 
     @JvmField
+    var autoTransferPos = 0.0
+    @JvmField
     var intakePos = -10.0
     @JvmField
     var specimenPickupPos = 107.0
@@ -52,7 +54,7 @@ object LiftNew: Subsystem() {
     @JvmField
     var firstAutonomousSpecimenScorePos = 253.0
     @JvmField
-    var hangPos = 720.0
+    var hangPos = 1000.0
 
     @JvmField
     var rightMotorName = "lift"
@@ -91,6 +93,9 @@ object LiftNew: Subsystem() {
 
     val toHang: Command
         get() = RunToPosition(motorGroup, hangPos, controller, this)
+
+    val toAutoTransferPos: Command
+        get() = RunToPosition(motorGroup, autoTransferPos, controller, this)
 
     override fun initialize() {
         rightMotor = MotorEx(rightMotorName).reverse()

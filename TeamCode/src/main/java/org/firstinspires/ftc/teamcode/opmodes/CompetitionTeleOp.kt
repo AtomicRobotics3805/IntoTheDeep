@@ -80,8 +80,6 @@ class CompetitionTeleOp: NextFTCOpMode(Claw, Intake, Arm, IntakeExtension, Intak
         IntakeSensor.Detect()()
 //        Lights.DisplayColor()()
 
-        IntakeExtension.resetEncoder()
-        LiftNew.resetEncoders()
         Arm.toIntake()
         IntakePivot.transfer()
 

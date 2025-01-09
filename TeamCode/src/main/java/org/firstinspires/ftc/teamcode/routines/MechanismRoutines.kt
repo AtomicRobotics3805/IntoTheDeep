@@ -138,7 +138,17 @@ object MechanismRoutines {
             )
         )
 
-
+    val autoTransfer: Command
+        get() = SequentialGroup(
+            IntakePivot.transfer,
+            Arm.toIntake,
+            Claw.open,
+            LiftNew.toSlightlyHigh,
+            IntakeExtension.toAutoTransfer,
+            LiftNew.toAutoTransferPos,
+            Claw.close,
+            Intake.stop
+        )
     val toHang: Command
         get() = ParallelGroup(
             Arm.toSpecimenScore,

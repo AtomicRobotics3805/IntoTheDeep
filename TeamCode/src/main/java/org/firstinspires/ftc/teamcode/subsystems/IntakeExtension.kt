@@ -28,7 +28,9 @@ object IntakeExtension: Subsystem() {
         get() = HoldPosition(motor, controller, this)
 
     @JvmField
-    var transferPos = 200.0
+    var transferPos = 100.0
+    @JvmField
+    var autoTransferPos = -50.0
     @JvmField
     var outPos = 1200.0 // TODO
     @JvmField
@@ -36,7 +38,7 @@ object IntakeExtension: Subsystem() {
     @JvmField
     var middlePos = 600.0
     @JvmField
-    var autoOutPos = 800.0
+    var autoOutPos = 600.0
     
     @JvmField
     var motorName = "intake_extension"
@@ -58,6 +60,9 @@ object IntakeExtension: Subsystem() {
 
     val resetEncoder: Command
         get() = ResetEncoder(motor, this)
+
+    val toAutoTransfer: Command
+        get() = RunToPosition(motor, autoTransferPos, controller, this)
 
     override fun initialize() {
         motor = MotorEx(motorName)

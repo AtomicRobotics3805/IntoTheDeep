@@ -6,7 +6,10 @@ import com.rowanmcalpin.nextftc.core.command.groups.ParallelRaceGroup
 import com.rowanmcalpin.nextftc.core.command.groups.SequentialGroup
 import com.rowanmcalpin.nextftc.core.command.utility.delays.Delay
 import com.rowanmcalpin.nextftc.pedro.FollowPath
+import org.firstinspires.ftc.teamcode.subsystems.Arm
 import org.firstinspires.ftc.teamcode.TrajectoryBuilder
+import org.firstinspires.ftc.teamcode.subsystems.Claw
+import org.firstinspires.ftc.teamcode.subsystems.LiftNew
 
 object BucketRoutines {
     val firstSample: Command
@@ -32,7 +35,7 @@ object BucketRoutines {
             ),
             ParallelGroup(
                 SequentialGroup(
-                    MechanismRoutines.transfer,
+                    MechanismRoutines.autoTransfer,
                     MechanismRoutines.sampleHigh
                 ),
                 FollowPath(TrajectoryBuilder.firstSampleToBucket, true)
@@ -56,7 +59,7 @@ object BucketRoutines {
             ),
             ParallelGroup(
                 SequentialGroup(
-                    MechanismRoutines.transfer,
+                    MechanismRoutines.autoTransfer,
                     MechanismRoutines.sampleHigh
                 ),
                 FollowPath(TrajectoryBuilder.secondSampleToBucket, true)
@@ -80,7 +83,7 @@ object BucketRoutines {
             ),
             ParallelGroup(
                 SequentialGroup(
-                    MechanismRoutines.transfer,
+                    MechanismRoutines.autoTransfer,
                     MechanismRoutines.sampleHigh
                 ),
                 FollowPath(TrajectoryBuilder.thirdSampleToBucket, true)
@@ -89,10 +92,15 @@ object BucketRoutines {
 
     val park: Command
         get() = ParallelGroup(
-            MechanismRoutines.bucketDropAndLevel1,
+            SequentialGroup(
+                Claw.open,
+                Delay(0.2),
+                LiftNew.toIntake
+            ),
             SequentialGroup(
                 Delay(0.5),
-                FollowPath(TrajectoryBuilder.bucketToPark, true)
+                FollowPath(TrajectoryBuilder.bucketToPark, true),
+                Arm.toBasketScore
             )
         )
 }

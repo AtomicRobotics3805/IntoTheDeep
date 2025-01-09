@@ -51,7 +51,7 @@ object FConstants {
         ) // Not being used, @see useSecondaryHeadingPID
 
         FollowerConstants.drivePIDFCoefficients =
-            CustomFilteredPIDFCoefficients(0.028, 0.0, 0.0002, 0.6, 0.0)
+            CustomFilteredPIDFCoefficients(0.02, 0.0, 0.0002, 0.6, 0.0)
 
         FollowerConstants.useSecondaryDrivePID = false
         FollowerConstants.secondaryDrivePIDFCoefficients = CustomFilteredPIDFCoefficients(
