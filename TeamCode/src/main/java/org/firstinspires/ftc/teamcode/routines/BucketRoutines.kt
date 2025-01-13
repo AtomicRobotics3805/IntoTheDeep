@@ -6,15 +6,18 @@ import com.rowanmcalpin.nextftc.core.command.groups.ParallelRaceGroup
 import com.rowanmcalpin.nextftc.core.command.groups.SequentialGroup
 import com.rowanmcalpin.nextftc.core.command.utility.delays.Delay
 import com.rowanmcalpin.nextftc.pedro.FollowPath
+import org.firstinspires.ftc.teamcode.FollowPathWithSpeed
 import org.firstinspires.ftc.teamcode.subsystems.Arm
 import org.firstinspires.ftc.teamcode.TrajectoryBuilder
 import org.firstinspires.ftc.teamcode.subsystems.Claw
+import org.firstinspires.ftc.teamcode.subsystems.IntakeExtension
+import org.firstinspires.ftc.teamcode.subsystems.IntakePivot
 import org.firstinspires.ftc.teamcode.subsystems.LiftNew
 
 object BucketRoutines {
     val firstSample: Command
         get() = ParallelGroup(
-                FollowPath(TrajectoryBuilder.startToBucket, true),
+                FollowPathWithSpeed(TrajectoryBuilder.startToBucket, true, 0.5),
                 MechanismRoutines.sampleHigh
             )
 
@@ -44,7 +47,7 @@ object BucketRoutines {
         )
 
     val thirdSample: Command
-        get() = SequentialGroup(
+        get() =SequentialGroup(
             Delay(0.5),
             ParallelGroup(
                 MechanismRoutines.bucketDropAndReset,
@@ -55,7 +58,11 @@ object BucketRoutines {
                             MechanismRoutines.farIntakeAuto,
                             Delay(3.0)
                         ),
-                        FollowPath(TrajectoryBuilder.bucketToSecondSample, true)
+                        SequentialGroup(
+                            FollowPath(TrajectoryBuilder.bucketToSecondSample, true),
+                            Delay(0.5),
+                            FollowPath(TrajectoryBuilder.pickupSecondSample, true)
+                        )
                     )
                 )
             ),
@@ -95,16 +102,19 @@ object BucketRoutines {
 
     val park: Command
         get() = ParallelGroup(
-            Delay(0.5),
+            IntakePivot.transfer,
+            IntakeExtension.toFullIn,
             SequentialGroup(
                 Claw.open,
-                Delay(0.2),
-                LiftNew.toIntake
+                Delay(0.6),
+                ParallelGroup(
+                    Arm.toAutoPark,
+                    LiftNew.zero
+                )
             ),
             SequentialGroup(
                 Delay(0.5),
-                FollowPath(TrajectoryBuilder.bucketToPark, true),
-                Arm.toAutoPark
+                FollowPath(TrajectoryBuilder.bucketToPark, true)
             )
         )
 }

@@ -94,9 +94,10 @@ object MechanismRoutines {
     val sampleHigh: Command
         get() = SequentialGroup(
             Claw.close,
-            ForcedParallelCommand(IntakeExtension.toSlightlyOut),
             ForcedParallelCommand(LiftNew.toHigh),
-            WaitUntil({ LiftNew.motorGroup.currentPosition >= 300}),
+            WaitUntil({ LiftNew.motorGroup.currentPosition >= 300 }),
+            ForcedParallelCommand(IntakeExtension.toSlightlyOut),
+            WaitUntil({ LiftNew.motorGroup.currentPosition >= 600}),
             IntakeExtension.toTransfer,
             WaitUntil({ LiftNew.motorGroup.currentPosition >= 2000 }),
             Arm.toBasketScore,
@@ -155,5 +156,21 @@ object MechanismRoutines {
             LiftNew.toHang
         )
 
-    // TODO: Specimen routines
+    val specimenPickup: Command
+        get() = SequentialGroup(
+            ForcedParallelCommand(LiftNew.toSpecimenPickup),
+            WaitUntil { LiftNew.motorGroup.currentPosition >= 40 },
+            Arm.toSpecimenPickup,
+            Delay(0.1),
+            Claw.specimenOpen
+        )
+
+    val specimenScore: Command
+        get() = SequentialGroup(
+            Claw.close,
+            Delay(0.3),
+            ForcedParallelCommand(LiftNew.toSpecimenScore),
+            WaitUntil { LiftNew.motorGroup.currentPosition >= 100 },
+            Arm.toSpecimenScore
+        )
 }

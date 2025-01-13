@@ -14,23 +14,23 @@ import com.rowanmcalpin.nextftc.pedro.PedroData.follower
 object TrajectoryBuilder {
     //region PEDRO PATHING
     val startPose = Pose(
-        9.0,
+        8.5,
         112.5,
         0.0.toRadians
     )
     val scorePose = Pose(
-        26.0,
-        126.0,
+        25.0,
+        127.0,
         (-45.0).toRadians
     )
     val sample1 = Pose(
-        25.6,
+        25.0,
         122.0,
         0.0.toRadians
     )
     val sample2 = Pose(
         25.0,
-        130.5,
+        133.0,
         0.0.toRadians
     )
     val sample3 = Pose(
@@ -144,7 +144,7 @@ object TrajectoryBuilder {
             .addPath(
                 BezierLine(
                     Point(
-                        sample2.x+3, sample2.y
+                        sample2.x, sample2.y+3
                     ),
                     Point(
                         scorePose
@@ -158,7 +158,7 @@ object TrajectoryBuilder {
             .addPath(
                 BezierLine(
                     Point(
-                        sample2.x+3, sample2.y
+                        sample2.x, sample2.y+3
                     ),
                     Point(
                         scorePose

@@ -82,6 +82,9 @@ class CompetitionTeleOp: NextFTCOpMode(Claw, Intake, Arm, IntakeExtension, Intak
         Arm.toIntake()
         IntakePivot.transfer()
 
+        LiftNew.resetEncoders()
+        IntakeExtension.resetEncoder()
+
         OpModeData.telemetry = telemetry
     }
 
@@ -121,6 +124,9 @@ class CompetitionTeleOp: NextFTCOpMode(Claw, Intake, Arm, IntakeExtension, Intak
         gamepadManager.gamepad2.dpadDown.pressedCommand = { LiftNew.toIntake }
 
         gamepadManager.gamepad1.dpadUp.pressedCommand = { MechanismRoutines.toHang }
-        gamepadManager.gamepad1.dpadDown.pressedCommand = { LiftNew.toIntake }
+        gamepadManager.gamepad1.dpadDown.pressedCommand = { LiftNew.zero }
+
+        gamepadManager.gamepad2.y.pressedCommand = { MechanismRoutines.specimenPickup }
+        gamepadManager.gamepad2.leftTrigger.pressedCommand = { MechanismRoutines.specimenScore }
     }
 }

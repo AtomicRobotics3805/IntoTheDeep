@@ -32,29 +32,29 @@ object LiftNew: Subsystem() {
     @JvmField
     var kF: Double = 0.13
 
-    val controller = PIDFController(coefficients, { kF }, setPointTolerance = 30.0)
+    val controller = PIDFController(coefficients, { kF }, setPointTolerance = 15.0)
 
     @JvmField
     var attempted = false
 
     @JvmField
-    var autoTransferPos = 40.0
+    var autoTransferPos = 100.0
     @JvmField
-    var intakePos = 20.0
+    var intakePos = 85.0
     @JvmField
-    var specimenPickupPos = 107.0
+    var specimenPickupPos = 180.0
     @JvmField
     var highPos = 3700.0
     @JvmField
     var slightlyHighPos = 400.0
     @JvmField
-    var specimenScorePos = 277.0
+    var specimenScorePos = 680.0
     @JvmField
     var specimenAutonomousScorePos = 277.0
     @JvmField
     var firstAutonomousSpecimenScorePos = 253.0
     @JvmField
-    var hangPos = 2400.0
+    var hangPos = 2000.0
 
     @JvmField
     var rightMotorName = "lift"
@@ -78,17 +78,14 @@ object LiftNew: Subsystem() {
 
 
     val toSpecimenScore: Command
-        get() =
-            RunToPosition(motorGroup, specimenScorePos, controller, this)
+        get() = RunToPosition(motorGroup, specimenScorePos, controller, this)
 
 
     val toAutonomousSpecScore: Command
-        get() =
-            RunToPosition(motorGroup, specimenAutonomousScorePos, controller, this)
+        get() = RunToPosition(motorGroup, specimenAutonomousScorePos, controller, this)
 
     val toFirstAutonomousSpecScore: Command
-        get() =
-            RunToPosition(motorGroup, firstAutonomousSpecimenScorePos, controller, this)
+        get() = RunToPosition(motorGroup, firstAutonomousSpecimenScorePos, controller, this)
 
 
     val toHang: Command
@@ -96,6 +93,8 @@ object LiftNew: Subsystem() {
 
     val toAutoTransferPos: Command
         get() = RunToPosition(motorGroup, autoTransferPos, controller, this)
+    val zero: Command
+        get() = RunToPosition(motorGroup, 0.0, controller, this)
 
     override fun initialize() {
         rightMotor = MotorEx(rightMotorName).reverse()

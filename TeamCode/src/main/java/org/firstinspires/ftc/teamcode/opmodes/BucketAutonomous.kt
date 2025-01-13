@@ -40,6 +40,7 @@ class BucketAutonomous: PedroOpMode(Arm, Claw, Intake, IntakeExtension, IntakePi
         LiftNew.resetEncoders()
         Arm.toIntake()
         IntakePivot.transfer()
+        Claw.close()
 
         OpModeData.telemetry = telemetry
     }

@@ -22,7 +22,7 @@ import com.rowanmcalpin.nextftc.ftc.hardware.controllables.RunToPosition
 object IntakeExtension: Subsystem() {
     lateinit var motor: MotorEx
     
-    val controller = PIDFController(PIDCoefficients(0.005, 0.0, 0.0))
+    val controller = PIDFController(PIDCoefficients(0.008, 0.0, 0.0))
 
     override val defaultCommand
         get() = HoldPosition(motor, controller, this)
@@ -30,9 +30,9 @@ object IntakeExtension: Subsystem() {
     @JvmField
     var transferPos = 100.0
     @JvmField
-    var autoTransferPos = 100.0
+    var autoTransferPos = 70.0
     @JvmField
-    var outPos = 1200.0 // TODO
+    var outPos = 900.0 // TODO
     @JvmField
     var slightlyOutPos = 700.0 // TODO
     @JvmField
@@ -63,6 +63,9 @@ object IntakeExtension: Subsystem() {
 
     val toAutoTransfer: Command
         get() = RunToPosition(motor, autoTransferPos, controller, this)
+
+    val toFullIn: Command
+        get() = RunToPosition(motor, 0.0, controller, this)
 
     override fun initialize() {
         motor = MotorEx(motorName)

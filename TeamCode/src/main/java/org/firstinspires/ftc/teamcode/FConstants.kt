@@ -29,33 +29,35 @@ object FConstants {
         FollowerConstants.forwardZeroPowerAcceleration = -27.643286510947192
         FollowerConstants.lateralZeroPowerAcceleration = -74.68689318834973
 
-        FollowerConstants.translationalPIDFCoefficients.setCoefficients(0.09, 0.0, 0.01, 0.0)
+        FollowerConstants.translationalPIDFCoefficients =
+            CustomPIDFCoefficients(0.15, 0.0, 0.02, 0.0)
 
         FollowerConstants.useSecondaryTranslationalPID = false
-        FollowerConstants.secondaryTranslationalPIDFCoefficients.setCoefficients(
+        FollowerConstants.secondaryTranslationalPIDFCoefficients = CustomPIDFCoefficients(
             0.1,
             0.0,
             0.01,
             0.0
         ) // Not being used, @see useSecondaryTranslationalPID
 
-        FollowerConstants.headingPIDFCoefficients.setCoefficients(1.5, 0.0, 0.1, 0.0)
+        FollowerConstants.headingPIDFCoefficients = CustomPIDFCoefficients(1.8, 0.0, 0.1, 0.0)
 
         FollowerConstants.useSecondaryHeadingPID = false
-        FollowerConstants.secondaryHeadingPIDFCoefficients.setCoefficients(
+        FollowerConstants.secondaryHeadingPIDFCoefficients = CustomPIDFCoefficients(
             2.0,
             0.0,
             0.1,
             0.0
         ) // Not being used, @see useSecondaryHeadingPID
 
-        FollowerConstants.drivePIDFCoefficients.setCoefficients(0.015, 0.0, 0.002, 0.6, 0.0)
+        FollowerConstants.drivePIDFCoefficients =
+            CustomFilteredPIDFCoefficients(0.024, 0.0, 0.0002, 0.6, 0.0)
 
         FollowerConstants.useSecondaryDrivePID = true
-        FollowerConstants.secondaryDrivePIDFCoefficients.setCoefficients(
-            0.005,
+        FollowerConstants.secondaryDrivePIDFCoefficients = CustomFilteredPIDFCoefficients(
+            0.1,
             0.0,
-            0.0005,
+            0.0,
             0.6,
             0.0
         ) // Not being used, @see useSecondaryDrivePID
@@ -63,7 +65,7 @@ object FConstants {
         FollowerConstants.zeroPowerAccelerationMultiplier = 4.4
         FollowerConstants.centripetalScaling = 0.0015
 
-        FollowerConstants.pathEndTimeoutConstraint = 200.0
+        FollowerConstants.pathEndTimeoutConstraint = 100.0
         FollowerConstants.pathEndTValueConstraint = 0.95
         FollowerConstants.pathEndVelocityConstraint = 0.1
         FollowerConstants.pathEndTranslationalConstraint = 0.1
